@@ -6,8 +6,8 @@ This [flake][nix flake] provides a quick way to run a local
 [sphinx][sphinx homepage] server that build the documentation of your project
 just like it would be built on https://readthedocs.org/.
 
-The idea behind this tool is to have a quick up-and-running tool to generate a
-changelog using [Nix][nix homepage].
+The idea behind this tool is to have a quick up-and-running tool to generate the
+project's documentation using [Nix][nix homepage].
 
 ## Usage
 

@@ -44,7 +44,7 @@ repository:
     allow_rebase_merge: true
     allow_squash_merge: true
     default_branch: main
-    description: "A Nix flake to generate a project's documentation using Sphinx."
+    description: "A Nix flake to generate a project's documentation using Sphinx, without worries."
     topics: flake,sphinx,documentation
     has_downloads: true
     has_issues: true
