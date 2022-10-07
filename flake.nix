@@ -23,31 +23,26 @@
             pp.sphinxcontrib-tikz
             pp.sphinx-autobuild
         ]);
-
-        mkSphinx = name: pkgs.stdenv.mkDerivation {
-          inherit name;
-
-          src = self;
-
-          buildInputs = [ sphinx ];
-
-          installPhase = ''
-            mkdir -p $out/bin
-            cp -r ${sphinx}/bin/* $out/bin/
-          '';
-        };
       in
       {
         # nix run
         apps = {
-          autobuild = flake-utils.lib.mkApp { drv = mkSphinx "sphinx-autobuild"; };
-          build = flake-utils.lib.mkApp { drv = mkSphinx "sphinx-build"; };
+          autobuild = {
+            type = "app";
+            program = "${sphinx}/bin/sphinx-autobuild";
+          };
+          build = {
+            type = "app";
+            program = "${sphinx}/bin/sphinx-build";
+          };
         };
 
         # nix shell
-        packages.default = pkgs.buildEnv {
-          name = "sphinx-dev";
-          paths = [ sphinx ];
+        packages = {
+          default = pkgs.buildEnv {
+            name = "sphinx-dev";
+            paths = [ sphinx ];
+          };
         };
 
         # nix develop
