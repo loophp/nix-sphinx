@@ -13,6 +13,10 @@
           inherit system;
         };
 
+        tex = pkgs.texlive.combine {
+          inherit (pkgs.texlive) scheme-full latexmk;
+        };
+
         sphinx = pkgs.python3.withPackages (pp: [
             pp.pyenchant
             pp.readthedocs-sphinx-ext
@@ -25,30 +29,42 @@
         ]);
       in
       {
-        # nix run
-        apps = {
-          autobuild = {
-            type = "app";
-            program = "${sphinx}/bin/sphinx-autobuild";
-          };
-          build = {
-            type = "app";
-            program = "${sphinx}/bin/sphinx-build";
-          };
-        };
-
         # nix shell
         packages = {
           default = pkgs.buildEnv {
             name = "sphinx-dev";
-            paths = [ sphinx ];
+            paths = [ sphinx tex ];
+          };
+          autobuild = pkgs.buildEnv {
+            name = "sphinx-autobuild";
+            paths = [
+              (pkgs.writeShellApplication {
+                name = "sphinx-autobuild";
+                text = ''
+                  ${sphinx}/bin/sphinx-autobuild "$@"
+                '';
+                runtimeInputs = [ sphinx tex ];
+              })
+            ];
+          };
+          build = pkgs.buildEnv {
+            name = "sphinx-build";
+            paths = [
+              (pkgs.writeShellApplication {
+                name = "sphinx-build";
+                text = ''
+                  ${sphinx}/bin/sphinx-build "$@"
+                '';
+                runtimeInputs = [ sphinx tex ];
+              })
+            ];
           };
         };
 
         # nix develop
         devShells.default = pkgs.mkShellNoCC {
           name = "sphinx-dev";
-          buildInputs = [ sphinx ];
+          buildInputs = [ sphinx tex ];
         };
       }
     );
