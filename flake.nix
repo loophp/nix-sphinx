@@ -11,13 +11,13 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          config = { allowUnfree = true; };
         };
 
         sphinx = pkgs.python3.withPackages (pp: [
             pp.pyenchant
             pp.readthedocs-sphinx-ext
             pp.recommonmark
+            pp.rst2pdf
             pp.sphinx_rtd_theme
             pp.sphinxcontrib-spelling
             pp.sphinxcontrib-tikz
